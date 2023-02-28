@@ -9,14 +9,17 @@ import com.qaprosoft.carina.core.foundation.api.http.HttpMethodType;
 import com.qaprosoft.carina.core.foundation.api.http.HttpResponseStatusType;
 import com.zebrunner.carina.utils.Configuration;
 
-@Endpoint(url = "${base_url}/posts/1", methodType = HttpMethodType.DELETE)
-@RequestTemplatePath(path = "api/users/_delete/rq.json")
-@ResponseTemplatePath(path = "api/users/_delete/rs.json")
+@Endpoint(url = "${base_url}/posts/${user_id}", methodType = HttpMethodType.PUT)
+@RequestTemplatePath(path = "api/users/_put/rq.json")
+@ResponseTemplatePath(path = "api/users/_put/rs.json")
 @SuccessfulHttpStatus(status = HttpResponseStatusType.OK_200)
-public class DeleteUserMethod extends AbstractApiMethodV2 {
+public class PutUserMethod extends AbstractApiMethodV2 {
 
-    public DeleteUserMethod(){
+    public PutUserMethod(String title, String body, int userId) {
         replaceUrlPlaceholder("base_url", Configuration.getEnvArg("api_url"));
+        replaceUrlPlaceholder("user_id", Integer.toString(userId));
+        setHeaders("Content-Type=application/json");
+        setRequestBody(String.format("{\"title\":\"%s\",\"body\":\"%s\",\"userId\":%d}", title, body, userId));
     }
 
 }
